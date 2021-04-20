@@ -29,9 +29,8 @@ namespace MyFirstConsoleApplication
         }
         static void Main(string[] args)
         {
-            //GetUserNameAndLocation();
-            //ChristmasCountdown(DateTime.Now);
-
+            GetUserNameAndLocation();
+            ChristmasCountdown(DateTime.Now);
             GlazerApp.RunExample();
         }
         
