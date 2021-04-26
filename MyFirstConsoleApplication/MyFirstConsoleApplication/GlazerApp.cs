@@ -10,6 +10,8 @@ namespace MyFirstConsoleApplication
         {
             double width, height, woodLength, glassArea;
             string widthString, heightString;
+
+            Console.WriteLine("========================= Glazer App =========================");
             
             Console.WriteLine("Enter the width:");
             widthString = Console.ReadLine();
