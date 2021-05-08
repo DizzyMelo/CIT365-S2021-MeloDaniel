@@ -6,44 +6,55 @@ namespace MegaDesk_Melo
 {
     class Validator
     {
-        static public int ValidateWidth(String input)
+        static public bool ValidateWidth(int input, out string errorMessage)
         {
-            int value = 0;
-            try 
-            { 
-                value = Convert.ToInt32(input);
-            }
-            catch(FormatException)
+            
+            if (input < Desk.MINIMUM_WIDTH || input > Desk.MAXIMUM_WIDTH)
             {
-                throw new FormatException("Please, make sure you provide a whole number!");
+                errorMessage = "Width out of constraints!\n" +
+                    $"Please make sure the input is not lower than {Desk.MINIMUM_WIDTH} and bigger than {Desk.MAXIMUM_WIDTH} inches";
+                return false;
             }
-
-            if (value < Desk.MINIMUM_WIDTH || value > Desk.MAXIMUM_WIDTH)
-            {
-                throw new ArgumentException("Width out of constraints!\n" +
-                    $"Please make sure the input is not lower than {Desk.MINIMUM_WIDTH} and bigger than {Desk.MAXIMUM_WIDTH} inches");
-            }
-            return value;
+            errorMessage = "";
+            return true;
         }
 
-        static public int ValidateDepth(String input)
+        static public bool ValidateDepth(int input, out string errorMessage)
         {
-            int value = 0;
-            try
-            {
-                value = Convert.ToInt32(input);
-            }
-            catch (FormatException)
-            {
-                throw new FormatException("Please, make sure you provide a whole number!");
-            }
 
-            if (value < Desk.MINIMUM_DEPTH || value > Desk.MAXIMUM_DEPTH)
+            if (input < Desk.MINIMUM_DEPTH || input > Desk.MAXIMUM_DEPTH)
             {
-                throw new ArgumentException("Depth out of constraints!\n" +
-                    $"Please make sure the input is not lower than {Desk.MINIMUM_DEPTH} and bigger than {Desk.MAXIMUM_DEPTH} inches");
+                errorMessage = "Depth out of constraints!\n" +
+                    $"Please make sure the input is not lower than {Desk.MINIMUM_DEPTH} and bigger than {Desk.MAXIMUM_DEPTH} inches";
+                return false;
             }
-            return value;
+            errorMessage = "";
+            return true;
+        }
+
+        static public bool ValidateNumDrawers(int input, out string errorMessage)
+        {
+
+            if (input < 0 || input > 7)
+            {
+                errorMessage = "Number of drawers should not be greater than 7 and less than 0!";
+                    
+                return false;
+            }
+            errorMessage = "";
+            return true;
+        }
+
+        static public bool ValidateName(string input, out string errorMessage)
+        {
+
+            if (input.Length == 0 || !input.Contains(" "))
+            {
+                errorMessage = "Enter your full name!";
+                return false;
+            }
+            errorMessage = "";
+            return true;
         }
     }
 }

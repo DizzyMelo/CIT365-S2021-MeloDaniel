@@ -29,6 +29,7 @@ namespace MegaDesk_Melo
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.nameLabel = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
             this.depthTextBox = new System.Windows.Forms.TextBox();
@@ -42,12 +43,14 @@ namespace MegaDesk_Melo
             this.drawerCostLabel = new System.Windows.Forms.Label();
             this.materialComboBox = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.materialCostLabel = new System.Windows.Forms.Label();
+            this.rushOptionCostLabel = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.rushOptionComboBox = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
+            this.totalLabel = new System.Windows.Forms.Label();
             this.calculateButton = new System.Windows.Forms.Button();
+            this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             this.SuspendLayout();
             // 
             // nameLabel
@@ -63,8 +66,10 @@ namespace MegaDesk_Melo
             // 
             this.nameTextBox.Location = new System.Drawing.Point(248, 70);
             this.nameTextBox.Name = "nameTextBox";
-            this.nameTextBox.Size = new System.Drawing.Size(357, 23);
+            this.nameTextBox.Size = new System.Drawing.Size(285, 23);
             this.nameTextBox.TabIndex = 1;
+            this.nameTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.nameTextBox_Validating);
+            this.nameTextBox.Validated += new System.EventHandler(this.nameTextBox_Validated);
             // 
             // depthTextBox
             // 
@@ -72,8 +77,11 @@ namespace MegaDesk_Melo
             this.depthTextBox.Name = "depthTextBox";
             this.depthTextBox.Size = new System.Drawing.Size(100, 23);
             this.depthTextBox.TabIndex = 2;
+            this.depthTextBox.TextChanged += new System.EventHandler(this.depthTextBox_TextChanged);
             this.depthTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.depthTextBox_KeyDown);
             this.depthTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.depthTextBox_KeyPress);
+            this.depthTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.depthTextBox_Validating);
+            this.depthTextBox.Validated += new System.EventHandler(this.depthTextBox_Validated);
             // 
             // label1
             // 
@@ -87,7 +95,7 @@ namespace MegaDesk_Melo
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(361, 102);
+            this.label2.Location = new System.Drawing.Point(388, 102);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(39, 15);
             this.label2.TabIndex = 5;
@@ -95,15 +103,18 @@ namespace MegaDesk_Melo
             // 
             // widthTextBox
             // 
-            this.widthTextBox.Location = new System.Drawing.Point(406, 99);
+            this.widthTextBox.Location = new System.Drawing.Point(433, 99);
             this.widthTextBox.Name = "widthTextBox";
             this.widthTextBox.Size = new System.Drawing.Size(100, 23);
             this.widthTextBox.TabIndex = 3;
+            this.widthTextBox.TextChanged += new System.EventHandler(this.widthTextBox_TextChanged);
+            this.widthTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.widthTextBox_Validating);
+            this.widthTextBox.Validated += new System.EventHandler(this.widthTextBox_Validated);
             // 
             // areaLabel
             // 
             this.areaLabel.AutoSize = true;
-            this.areaLabel.Location = new System.Drawing.Point(523, 102);
+            this.areaLabel.Location = new System.Drawing.Point(433, 147);
             this.areaLabel.Name = "areaLabel";
             this.areaLabel.Size = new System.Drawing.Size(34, 15);
             this.areaLabel.TabIndex = 6;
@@ -112,16 +123,16 @@ namespace MegaDesk_Melo
             // areaCosLabel
             // 
             this.areaCosLabel.AutoSize = true;
-            this.areaCosLabel.Location = new System.Drawing.Point(203, 138);
+            this.areaCosLabel.Location = new System.Drawing.Point(433, 166);
             this.areaCosLabel.Name = "areaCosLabel";
-            this.areaCosLabel.Size = new System.Drawing.Size(70, 15);
+            this.areaCosLabel.Size = new System.Drawing.Size(91, 15);
             this.areaCosLabel.TabIndex = 7;
-            this.areaCosLabel.Text = "Area Cost: $";
+            this.areaCosLabel.Text = "Area Cost: $0.00";
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(193, 178);
+            this.label3.Location = new System.Drawing.Point(192, 202);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(49, 15);
             this.label3.TabIndex = 8;
@@ -129,61 +140,65 @@ namespace MegaDesk_Melo
             // 
             // drawerTextBox
             // 
-            this.drawerTextBox.Location = new System.Drawing.Point(248, 175);
+            this.drawerTextBox.Location = new System.Drawing.Point(247, 199);
             this.drawerTextBox.Name = "drawerTextBox";
-            this.drawerTextBox.Size = new System.Drawing.Size(100, 23);
+            this.drawerTextBox.Size = new System.Drawing.Size(121, 23);
             this.drawerTextBox.TabIndex = 4;
+            this.drawerTextBox.Text = "0";
             this.drawerTextBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.drawerTextBox_KeyPress);
             this.drawerTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.drawerTextBox_KeyUp);
+            this.drawerTextBox.Validating += new System.ComponentModel.CancelEventHandler(this.drawerTextBox_Validating);
+            this.drawerTextBox.Validated += new System.EventHandler(this.drawerTextBox_Validated);
             // 
             // drawerCostLabel
             // 
             this.drawerCostLabel.AutoSize = true;
-            this.drawerCostLabel.Location = new System.Drawing.Point(361, 178);
+            this.drawerCostLabel.Location = new System.Drawing.Point(433, 202);
             this.drawerCostLabel.Name = "drawerCostLabel";
-            this.drawerCostLabel.Size = new System.Drawing.Size(67, 15);
+            this.drawerCostLabel.Size = new System.Drawing.Size(100, 15);
             this.drawerCostLabel.TabIndex = 10;
-            this.drawerCostLabel.Text = "X  $50.00  =";
+            this.drawerCostLabel.Text = "X  $50.00  =  $0.00";
             // 
             // materialComboBox
             // 
             this.materialComboBox.FormattingEnabled = true;
-            this.materialComboBox.Location = new System.Drawing.Point(248, 227);
+            this.materialComboBox.Location = new System.Drawing.Point(247, 251);
             this.materialComboBox.Name = "materialComboBox";
             this.materialComboBox.Size = new System.Drawing.Size(121, 23);
             this.materialComboBox.TabIndex = 5;
+            this.materialComboBox.SelectedIndexChanged += new System.EventHandler(this.materialComboBox_SelectedIndexChanged);
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(193, 230);
+            this.label5.Location = new System.Drawing.Point(192, 254);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(50, 15);
             this.label5.TabIndex = 13;
             this.label5.Text = "Material";
             // 
-            // label6
+            // materialCostLabel
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(406, 230);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(89, 15);
-            this.label6.TabIndex = 14;
-            this.label6.Text = "Material Cost: $";
+            this.materialCostLabel.AutoSize = true;
+            this.materialCostLabel.Location = new System.Drawing.Point(433, 254);
+            this.materialCostLabel.Name = "materialCostLabel";
+            this.materialCostLabel.Size = new System.Drawing.Size(122, 15);
+            this.materialCostLabel.TabIndex = 14;
+            this.materialCostLabel.Text = "Material Cost: $200.00";
             // 
-            // label7
+            // rushOptionCostLabel
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(406, 259);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(112, 15);
-            this.label7.TabIndex = 17;
-            this.label7.Text = "Rush Option Cost: $";
+            this.rushOptionCostLabel.AutoSize = true;
+            this.rushOptionCostLabel.Location = new System.Drawing.Point(433, 283);
+            this.rushOptionCostLabel.Name = "rushOptionCostLabel";
+            this.rushOptionCostLabel.Size = new System.Drawing.Size(133, 15);
+            this.rushOptionCostLabel.TabIndex = 17;
+            this.rushOptionCostLabel.Text = "Rush Option Cost: $0.00";
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(169, 259);
+            this.label8.Location = new System.Drawing.Point(168, 283);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(73, 15);
             this.label8.TabIndex = 16;
@@ -192,23 +207,24 @@ namespace MegaDesk_Melo
             // rushOptionComboBox
             // 
             this.rushOptionComboBox.FormattingEnabled = true;
-            this.rushOptionComboBox.Location = new System.Drawing.Point(248, 256);
+            this.rushOptionComboBox.Location = new System.Drawing.Point(247, 280);
             this.rushOptionComboBox.Name = "rushOptionComboBox";
             this.rushOptionComboBox.Size = new System.Drawing.Size(121, 23);
             this.rushOptionComboBox.TabIndex = 6;
+            this.rushOptionComboBox.SelectedIndexChanged += new System.EventHandler(this.rushOptionComboBox_SelectedIndexChanged);
             // 
-            // label9
+            // totalLabel
             // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(198, 330);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(44, 15);
-            this.label9.TabIndex = 18;
-            this.label9.Text = "Total: $";
+            this.totalLabel.AutoSize = true;
+            this.totalLabel.Location = new System.Drawing.Point(433, 322);
+            this.totalLabel.Name = "totalLabel";
+            this.totalLabel.Size = new System.Drawing.Size(65, 15);
+            this.totalLabel.TabIndex = 18;
+            this.totalLabel.Text = "Total: $0.00";
             // 
             // calculateButton
             // 
-            this.calculateButton.Location = new System.Drawing.Point(286, 381);
+            this.calculateButton.Location = new System.Drawing.Point(324, 379);
             this.calculateButton.Name = "calculateButton";
             this.calculateButton.Size = new System.Drawing.Size(209, 36);
             this.calculateButton.TabIndex = 7;
@@ -216,17 +232,21 @@ namespace MegaDesk_Melo
             this.calculateButton.UseVisualStyleBackColor = true;
             this.calculateButton.Click += new System.EventHandler(this.calculateButton_Click);
             // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
             // AddQuote
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.calculateButton);
-            this.Controls.Add(this.label9);
-            this.Controls.Add(this.label7);
+            this.Controls.Add(this.totalLabel);
+            this.Controls.Add(this.rushOptionCostLabel);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.rushOptionComboBox);
-            this.Controls.Add(this.label6);
+            this.Controls.Add(this.materialCostLabel);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.materialComboBox);
             this.Controls.Add(this.drawerCostLabel);
@@ -241,8 +261,9 @@ namespace MegaDesk_Melo
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.nameLabel);
             this.Name = "AddQuote";
-            this.Text = "Total: $";
+            this.Text = "Total: $0.00";
             this.Load += new System.EventHandler(this.AddQuote_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -263,11 +284,12 @@ namespace MegaDesk_Melo
         private System.Windows.Forms.Label drawerCostLabel;
         private System.Windows.Forms.ComboBox materialComboBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label materialCostLabel;
+        private System.Windows.Forms.Label rushOptionCostLabel;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox rushOptionComboBox;
-        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label totalLabel;
         private System.Windows.Forms.Button calculateButton;
+        private System.Windows.Forms.ErrorProvider errorProvider1;
     }
 }

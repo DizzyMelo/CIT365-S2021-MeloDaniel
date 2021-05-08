@@ -9,10 +9,12 @@ namespace MegaDesk_Melo
         private string name;
         private DateTime date;
         private Desk desk;
-        
 
-        DeskQuote(Desk desk)
+        public DeskQuote() { }
+        
+        public DeskQuote(Desk desk, string name)
         {
+            this.name = name;
             this.desk = desk;
             date = DateTime.Now;
         }
@@ -24,11 +26,21 @@ namespace MegaDesk_Melo
             int total = 200;
 
             total += (50 * desk.NumDrawers);
+            total += calculateDifference();
             total += selectDesktopMaterialCost();
             total += selectRushOrderCost();
             
 
             return total;
+        }
+
+        private int calculateDifference()
+        {
+            int size = desk.Depth * desk.Width;
+            if (size <= 1000)
+                return 0;
+            else
+                return size - 1000;
         }
 
         private int selectRushOrderCost()

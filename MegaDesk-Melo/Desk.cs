@@ -26,5 +26,5 @@ namespace MegaDesk_Melo
         public int RushOption { get; set; }
 
     }
-    enum DesktopMaterial { Oak, Laminate, Pine, Rosewood, Venner }
+    public enum DesktopMaterial { Oak, Laminate, Pine, Rosewood, Venner }
 }

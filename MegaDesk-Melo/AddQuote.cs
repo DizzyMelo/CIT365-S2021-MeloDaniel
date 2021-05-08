@@ -13,29 +13,23 @@ namespace MegaDesk_Melo
         public AddQuote()
         {
             InitializeComponent();
-        }
+        } 
 
         private void AddQuote_Load(object sender, EventArgs e)
         {
-            //{ Oak, Laminate, Pine, Rosewood, Venner }
-            System.Object[] objects = new System.Object[5];
-            System.Object[] rushObjects = new System.Object[3];
-
-            objects[0] = "Oak";
-            objects[1] = "Laminate";
-            objects[2] = "Pine";
-            objects[3] = "Rosewood";
-            objects[4] = "Venner";
+            System.Object[] rushObjects = new System.Object[4];
 
             rushObjects[0] = "3 Days";
             rushObjects[1] = "5 Days";
             rushObjects[2] = "7 Days";
+            rushObjects[3] = "14 Days";
 
-            materialComboBox.Items.AddRange(objects);
+
+            materialComboBox.DataSource = Enum.GetValues(typeof(DesktopMaterial));
             materialComboBox.SelectedIndex = 0;
 
             rushOptionComboBox.Items.AddRange(rushObjects);
-            rushOptionComboBox.SelectedIndex = 0;
+            rushOptionComboBox.SelectedIndex = 3;
         }
 
         private void calculateButton_Click(object sender, EventArgs e)
@@ -43,17 +37,27 @@ namespace MegaDesk_Melo
             Desk desk = new Desk();
             try
             {
-                desk.Width = Validator.ValidateWidth(widthTextBox.Text);
-                desk.Depth = Validator.ValidateDepth(depthTextBox.Text);
-            }
-            catch(ArgumentException ex)
-            {
-                MessageBox.Show(ex.Message, "Error");
+                desk.Width = Convert.ToInt32(widthTextBox.Text);
+                desk.Depth = Convert.ToInt32(depthTextBox.Text);
+                desk.NumDrawers = Convert.ToInt32(drawerTextBox.Text);
+                desk.RushOption = 3;
+                desk.SurfaceMaterial = DesktopMaterial.Oak;
             }
             catch (FormatException ex)
             {
                 MessageBox.Show(ex.Message, "Error");
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
+            finally
+            {
+                DeskQuote quote = new DeskQuote(desk, nameTextBox.Text);
+                int total = quote.calculateTotalPrice();
+                totalLabel.Text = "Total: $" + total.ToString() + ".00";
+            }
+            
         }
 
         private bool nonNumberEntered = false;
@@ -102,6 +106,239 @@ namespace MegaDesk_Melo
             {
                 drawerCostLabel.Text = "X  $50.00  =";
             }
+        }
+
+        private void depthTextBox_Validated(object sender, EventArgs e)
+        {
+            errorProvider1.SetError(depthTextBox, "");
+        }
+
+        private void depthTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            string errorMsg;
+            int input;
+            try 
+            {
+                input = Convert.ToInt32(depthTextBox.Text);
+            }
+            catch (FormatException)
+            {
+                e.Cancel = true;
+                errorMsg = "Please, provide an integer number!";
+                this.errorProvider1.SetError(depthTextBox, errorMsg);
+                return;
+            }
+            
+            if (!Validator.ValidateDepth(input, out errorMsg))
+            {
+                // Cancel the event and select the text to be corrected by the user.
+                e.Cancel = true;
+                depthTextBox.Select(0, depthTextBox.Text.Length);
+
+                // Set the ErrorProvider error with the text to display. 
+                this.errorProvider1.SetError(depthTextBox, errorMsg);
+            }
+        }
+
+        private void widthTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            string errorMsg;
+            int input;
+            try
+            {
+                input = Convert.ToInt32(widthTextBox.Text);
+            }
+            catch (FormatException)
+            {
+                e.Cancel = true;
+                errorMsg = "Please, provide an integer number!";
+                this.errorProvider1.SetError(widthTextBox, errorMsg);
+                return;
+            }
+
+            if (!Validator.ValidateWidth(input, out errorMsg))
+            {
+                // Cancel the event and select the text to be corrected by the user.
+                e.Cancel = true;
+                widthTextBox.Select(0, widthTextBox.Text.Length);
+
+                // Set the ErrorProvider error with the text to display. 
+                this.errorProvider1.SetError(widthTextBox, errorMsg);
+            }
+        }
+
+        private void widthTextBox_Validated(object sender, EventArgs e)
+        {
+            errorProvider1.SetError(widthTextBox, "");
+        }
+
+        private void depthTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.calculateArea();
+        }
+
+        private void widthTextBox_TextChanged(object sender, EventArgs e)
+        {
+            this.calculateArea();
+        }
+
+        private void calculateArea()
+        {
+            try
+            {
+                int size = Convert.ToInt32(widthTextBox.Text) * Convert.ToInt32(depthTextBox.Text);
+                areaLabel.Text = "Area: " + size.ToString() + " in";
+                int cost = size < 1000 ? 0 : (size - 1000);
+                areaCosLabel.Text = $"Area Cost: ${cost}.00";
+            }
+            catch (Exception)
+            {
+                areaLabel.Text = "Area:";
+                areaCosLabel.Text = "Area Cost: $0.00";
+            }
+        }
+
+        private void materialComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string material = materialComboBox.GetItemText(materialComboBox.SelectedItem);
+            int cost = selectDesktopMaterialCost(material);
+            materialCostLabel.Text = $"Material Cost: ${cost}.00";
+        }
+
+        private void rushOptionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                int depth = Convert.ToInt32(depthTextBox.Text);
+                int width = Convert.ToInt32(widthTextBox.Text);
+                int cost = selectRushOrderCost(depth, width, rushOptionComboBox.SelectedIndex);
+                rushOptionCostLabel.Text = $"Rush Option Cost: ${cost}.00";
+            }
+            catch(Exception)
+            {
+                rushOptionCostLabel.Text = $"Rush Option Cost: $0.00";
+            }
+            
+        }
+
+        private int selectDesktopMaterialCost(String material)
+        {
+            int cost = 0;
+            switch (material)
+            {
+                case "Oak":
+                    cost = 200;
+                    break;
+
+                case "Laminate":
+                    cost = 100;
+                    break;
+
+                case "Pine":
+                    cost = 50;
+                    break;
+
+                case "Rosewood":
+                    cost = 300;
+                    break;
+
+                case "Venner":
+                    cost = 125;
+                    break;
+            }
+            return cost;
+        }
+
+        private int selectRushOrderCost(int depth, int width, int rushOption)
+        {
+            int cost = 0;
+            int size = width * depth;
+
+            switch (rushOption)
+            {
+                case 0:
+                    if (size < 1000)
+                        cost = 60;
+                    else if (size >= 1000 && size < 2000)
+                        cost = 70;
+                    else
+                        cost = 80;
+                    break;
+                case 1:
+                    if (size < 1000)
+                        cost = 40;
+                    else if (size >= 1000 && size < 2000)
+                        cost = 50;
+                    else
+                        cost = 60;
+                    break;
+                case 2:
+                    if (size < 1000)
+                        cost = 30;
+                    else if (size >= 1000 && size < 2000)
+                        cost = 35;
+                    else
+                        cost = 40;
+                    break;
+                default:
+                    cost = 0;
+                    break;
+            }
+
+            return cost;
+        }
+
+        private void drawerTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            string errorMsg;
+            int input;
+            try
+            {
+                input = Convert.ToInt32(drawerTextBox.Text);
+            }
+            catch (FormatException)
+            {
+                e.Cancel = true;
+                errorMsg = "Please, provide an integer number!";
+                this.errorProvider1.SetError(drawerTextBox, errorMsg);
+                return;
+            }
+
+            if (!Validator.ValidateNumDrawers(input, out errorMsg))
+            {
+                // Cancel the event and select the text to be corrected by the user.
+                e.Cancel = true;
+                drawerTextBox.Select(0, drawerTextBox.Text.Length);
+
+                // Set the ErrorProvider error with the text to display. 
+                this.errorProvider1.SetError(drawerTextBox, errorMsg);
+            }
+        }
+
+        private void drawerTextBox_Validated(object sender, EventArgs e)
+        {
+            this.errorProvider1.SetError(drawerTextBox, "");
+        }
+
+        private void nameTextBox_Validating(object sender, CancelEventArgs e)
+        {
+            string errorMsg;
+            string name = nameTextBox.Text;
+            
+            if (!Validator.ValidateName(name, out errorMsg))
+            {
+                // Cancel the event and select the text to be corrected by the user.
+                e.Cancel = true;
+                nameTextBox.Select(0, nameTextBox.Text.Length);
+
+                // Set the ErrorProvider error with the text to display. 
+                this.errorProvider1.SetError(nameTextBox, errorMsg);
+            }
+        }
+
+        private void nameTextBox_Validated(object sender, EventArgs e)
+        {
+            this.errorProvider1.SetError(nameTextBox, "");
         }
     }
 }

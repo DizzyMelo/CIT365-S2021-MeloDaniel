@@ -29,39 +29,41 @@ namespace MegaDesk_Melo
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.allQuotesDataGridView = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.allQuotesDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // allQuotesDataGridView
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(12, 111);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(460, 238);
-            this.dataGridView1.TabIndex = 0;
+            this.allQuotesDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.allQuotesDataGridView.Location = new System.Drawing.Point(12, 60);
+            this.allQuotesDataGridView.Name = "allQuotesDataGridView";
+            this.allQuotesDataGridView.RowTemplate.Height = 25;
+            this.allQuotesDataGridView.Size = new System.Drawing.Size(460, 238);
+            this.allQuotesDataGridView.TabIndex = 0;
+            this.allQuotesDataGridView.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(208, 30);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 15);
+            this.label1.Size = new System.Drawing.Size(62, 15);
             this.label1.TabIndex = 1;
-            this.label1.Text = "AllQuotes";
+            this.label1.Text = "All Quotes";
             // 
             // ViewAllQuotes
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(484, 361);
+            this.ClientSize = new System.Drawing.Size(484, 317);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.dataGridView1);
+            this.Controls.Add(this.allQuotesDataGridView);
             this.Name = "ViewAllQuotes";
             this.Text = "AllQuotes";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.ViewAllQuotes_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.allQuotesDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -69,7 +71,7 @@ namespace MegaDesk_Melo
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView allQuotesDataGridView;
         private System.Windows.Forms.Label label1;
     }
 }

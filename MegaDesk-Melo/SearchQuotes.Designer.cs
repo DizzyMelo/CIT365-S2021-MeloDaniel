@@ -30,7 +30,7 @@ namespace MegaDesk_Melo
         private void InitializeComponent()
         {
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.searchCombobox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
@@ -45,13 +45,13 @@ namespace MegaDesk_Melo
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
-            // comboBox1
+            // searchCombobox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(102, 61);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 23);
-            this.comboBox1.TabIndex = 1;
+            this.searchCombobox.FormattingEnabled = true;
+            this.searchCombobox.Location = new System.Drawing.Point(102, 61);
+            this.searchCombobox.Name = "searchCombobox";
+            this.searchCombobox.Size = new System.Drawing.Size(121, 23);
+            this.searchCombobox.TabIndex = 1;
             // 
             // label1
             // 
@@ -68,10 +68,11 @@ namespace MegaDesk_Melo
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(484, 361);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.searchCombobox);
             this.Controls.Add(this.dataGridView1);
             this.Name = "SearchQuotes";
             this.Text = "SearchQuotes";
+            this.Load += new System.EventHandler(this.SearchQuotes_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -81,7 +82,7 @@ namespace MegaDesk_Melo
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox searchCombobox;
         private System.Windows.Forms.Label label1;
     }
 }

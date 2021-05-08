@@ -19,5 +19,10 @@ namespace MegaDesk_Melo
         {
 
         }
+
+        private void SearchQuotes_Load(object sender, EventArgs e)
+        {
+            searchCombobox.DataSource = Enum.GetValues(typeof(DesktopMaterial));
+        }
     }
 }
