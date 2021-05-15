@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Daniel Melo",
+    "date": "2021-01-01",
+    "rushOption": 1,
+    "desk": {
+      "width": 50,
+      "depth": 30,
+      "numDrawers": 4,
+      "surfaceMaterial": "Oak",
+      "rushOption": 5
+    }
+  },
+  {
+    "name": "Maria Melo",
+    "date": "2021-01-01",
+    "rushOption": 1,
+    "desk": {
+      "width": 53,
+      "depth": 34,
+      "numDrawers": 1,
+      "surfaceMaterial": "Pine",
+      "rushOption": 5
+    }
+  },
+  {
+    "name": "Kaynara Melo",
+    "date": "2021-01-01",
+    "rushOption": 1,
+    "desk": {
+      "width": 67,
+      "depth": 35,
+      "numDrawers": 2,
+      "surfaceMaterial": "Laminate",
+      "rushOption": 5
+    }
+  }
+]
