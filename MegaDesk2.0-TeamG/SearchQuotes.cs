@@ -40,7 +40,7 @@ namespace MegaDesk_Melo
         {
             searchCombobox.DataSource = Enum.GetValues(typeof(DesktopMaterial));
             DeskQuote quote = new DeskQuote();
-            List<ShowQuote> items = quote.ReadQuotes();
+            List<ShowQuote> items = quote.ReadQuotes("quotes.json");
             searchDataGridView.DataSource = items;
         }
     }

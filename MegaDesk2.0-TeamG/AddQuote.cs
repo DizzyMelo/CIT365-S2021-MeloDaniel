@@ -371,7 +371,7 @@ namespace MegaDesk_Melo
                 MessageBox.Show("Please, complete the quote!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            bool res = DeskQuote.SavaQuote(saveQuote);
+            bool res = saveQuote.Save(saveQuote, "quotes.json");
 
             if(res)
             {

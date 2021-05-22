@@ -23,7 +23,7 @@ namespace MegaDesk_Melo
         private void ViewAllQuotes_Load(object sender, EventArgs e)
         {
             DeskQuote quote = new DeskQuote();
-            List<ShowQuote> items =  quote.ReadQuotes();
+            List<ShowQuote> items =  quote.ReadQuotes("quotes.json");
             allQuotesDataGridView.DataSource = items;
         }
     }

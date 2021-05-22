@@ -16,9 +16,8 @@ namespace MegaDesk_Melo
         public DateTime Date { get; set; }
         public int RushOption { get; set; }
 
-        public static bool SavaQuote(DeskQuote quote)
+        public bool Save(DeskQuote quote, string filepath)
         {
-            string filepath = "quotes.json";
             try
             {
                 string json = System.IO.File.ReadAllText(filepath);
@@ -27,12 +26,12 @@ namespace MegaDesk_Melo
 
                 json = JsonConvert.SerializeObject(items);
                 System.IO.File.WriteAllText(filepath, json);
-                return true;
             }
             catch(Exception)
             {
                 return false;
             }
+            return true;
         }
 
         public int [,] GetRushOrder()
@@ -65,9 +64,9 @@ namespace MegaDesk_Melo
             return additionalCharges;
         }
 
-        public List<ShowQuote> ReadQuotes()
+        public List<ShowQuote> ReadQuotes(string filepath)
         {
-            using (StreamReader r = new StreamReader("quotes.json"))
+            using (StreamReader r = new StreamReader(filepath))
             {
                 string json = r.ReadToEnd();
                 List<DeskQuote> items = JsonConvert.DeserializeObject<List<DeskQuote>>(json);
