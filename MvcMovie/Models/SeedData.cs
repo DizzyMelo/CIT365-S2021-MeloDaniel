@@ -19,41 +19,34 @@ namespace MvcMovie.Models
                     return;   // DB has been seeded
                 }
 
+                //The RM, Other Side of Heaven, and Meet the Mormons
                 context.Movie.AddRange(
                     new Movie
                     {
-                        Title = "When Harry Met Sally",
-                        ReleaseDate = DateTime.Parse("1989-2-12"),
-                        Genre = "Romantic Comedy",
-                        Rating = "R",
-                        Price = 7.99M
-                    },
-
-                    new Movie
-                    {
-                        Title = "Ghostbusters ",
-                        ReleaseDate = DateTime.Parse("1984-3-13"),
+                        Title = "The RM",
+                        ReleaseDate = DateTime.Parse("2003-1-31"),
                         Genre = "Comedy",
-                        Rating = "R",
-                        Price = 8.99M
+                        Rating = "G",
+                        Price = 7.99M,
+                        Image = "the_rm.jpg"
                     },
-
                     new Movie
                     {
-                        Title = "Ghostbusters 2",
-                        ReleaseDate = DateTime.Parse("1986-2-23"),
-                        Genre = "Comedy",
-                        Rating = "R",
-                        Price = 9.99M
+                        Title = "Other Side of Heaven",
+                        ReleaseDate = DateTime.Parse("2001-12-14"),
+                        Genre = "Romantic",
+                        Rating = "G",
+                        Price = 10.99M,
+                        Image = "other_side_of_heaven.jpg"
                     },
-
                     new Movie
                     {
-                        Title = "Rio Bravo",
-                        ReleaseDate = DateTime.Parse("1959-4-15"),
-                        Genre = "Western",
-                        Rating = "R",
-                        Price = 3.99M
+                        Title = "Meet the Mormons",
+                        ReleaseDate = DateTime.Parse("2014-10-10"),
+                        Genre = "Documentary",
+                        Rating = "G",
+                        Price = 15.99M,
+                        Image = "meet_the_mormons.jpg"
                     }
                 );
                 context.SaveChanges();

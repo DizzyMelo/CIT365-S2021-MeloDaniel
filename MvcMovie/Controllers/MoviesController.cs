@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,22 +14,37 @@ namespace MvcMovie.Controllers
     public class MoviesController : Controller
     {
         private readonly MvcMovieContext _context;
+        private readonly IWebHostEnvironment hostingEnvironment;
 
-        public MoviesController(MvcMovieContext context)
+        public MoviesController(MvcMovieContext context, IWebHostEnvironment hostingEnvironment)
         {
             _context = context;
+            this.hostingEnvironment = hostingEnvironment;
         }
 
         // GET: Movies
-        public async Task<IActionResult> Index(string movieGenre, string searchString)
+        public async Task<IActionResult> Index(string movieGenre, string searchString, string sortByDate)
         {
             // Use LINQ to get list of genres.
+            ViewData["SortDate"] = string.IsNullOrEmpty(sortByDate) ? "SortDate" : "";
             IQueryable<string> genreQuery = from m in _context.Movie
                                             orderby m.Genre
                                             select m.Genre;
 
             var movies = from m in _context.Movie
                          select m;
+
+            switch (sortByDate)
+            {
+                case "SortDate":
+                    movies = movies.OrderBy(m => m.ReleaseDate);
+                    break;
+
+                default:
+                    movies = movies.OrderByDescending(m => m.ReleaseDate);
+                    break;
+            }
+
 
             if (!string.IsNullOrEmpty(searchString))
             {
@@ -83,11 +100,31 @@ namespace MvcMovie.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+        public async Task<IActionResult> Create([Bind("Id,Title,ReleaseDate,Genre,Price,Rating,Image")] MovieCreateModel movie)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(movie);
+                string uniqueFileName = null;
+
+                if (movie.Image != null)
+                {
+                    // ;
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "img");
+                    uniqueFileName = Guid.NewGuid().ToString() + "_" + movie.Image.FileName;
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    movie.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+
+                Movie newMovie = new Movie
+                {
+                    Title = movie.Title,
+                    ReleaseDate = movie.ReleaseDate,
+                    Genre = movie.Genre,
+                    Price = movie.Price,
+                    Rating = movie.Rating,
+                    Image = uniqueFileName
+                };
+                _context.Add(newMovie);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -107,7 +144,18 @@ namespace MvcMovie.Controllers
             {
                 return NotFound();
             }
-            return View(movie);
+
+            MovieEditModel newMovie = new MovieEditModel
+            {
+                Title = movie.Title,
+                ReleaseDate = movie.ReleaseDate,
+                Genre = movie.Genre,
+                Price = movie.Price,
+                Rating = movie.Rating,
+                ImagePath = movie.Image,
+                Image = null
+            };
+            return View(newMovie);
         }
 
         // POST: Movies/Edit/5
@@ -115,7 +163,7 @@ namespace MvcMovie.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating")] Movie movie)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,ReleaseDate,Genre,Price,Rating,Image,ImagePath")] MovieEditModel movie)
         {
             if (id != movie.Id)
             {
@@ -126,7 +174,28 @@ namespace MvcMovie.Controllers
             {
                 try
                 {
-                    _context.Update(movie);
+                    string uniqueFileName = movie.ImagePath;
+
+                    if (movie.Image != null)
+                    {
+                        // ;
+                        string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "img");
+                        uniqueFileName = Guid.NewGuid().ToString() + "_" + movie.Image.FileName;
+                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                        movie.Image.CopyTo(new FileStream(filePath, FileMode.Create));
+                    }
+
+                    Movie newMovie = new Movie
+                    {
+                        Id = id,
+                        Title = movie.Title,
+                        ReleaseDate = movie.ReleaseDate,
+                        Genre = movie.Genre,
+                        Price = movie.Price,
+                        Rating = movie.Rating,
+                        Image = uniqueFileName
+                    };
+                    _context.Update(newMovie);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

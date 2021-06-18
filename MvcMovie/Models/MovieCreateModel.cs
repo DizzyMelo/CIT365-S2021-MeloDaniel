@@ -1,12 +1,12 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Http;
 
 namespace MvcMovie.Models
 {
-    public class Movie
+    public class MovieCreateModel
     {
-        public int Id { get; set; }
 
         [StringLength(60, MinimumLength = 3)]
         public string Title { get; set; }
@@ -25,6 +25,6 @@ namespace MvcMovie.Models
         public string Rating { get; set; }
 
         [Required]
-        public string Image { get; set; }
+        public IFormFile Image { get; set; }
     }
 }
